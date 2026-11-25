@@ -1,0 +1,243 @@
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{booktabs}
+\usepackage{hyperref}
+
+\hypersetup{colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\oeis}[1]{\href{https://oeis.org/#1}{\texttt{#1}}}
+
+\title{Asymptotics of the Coefficients of $\prod_{k\ge1}(1+kx^k)$:\\
+Kotesovec's Conjecture for OEIS A022629\\
+and a Saddle-Point Formula for $a(n)$}
+
+\author{Le Duy Phuc\thanks{Email: \href{mailto:leduyphuc1702@gmail.com}{\texttt{leduyphuc1702@gmail.com}}}}
+\date{November 25, 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Let $a(n)=[x^n]\prod_{k\ge1}(1+kx^k)$ (\oeis{A022629}), the sum over all partitions of $n$ into distinct parts of the product of the parts. Vaclav Kotesovec conjectured in 2018 that $\log a(n)\sim\sqrt{n/2}\,(\log(2n)-2)$. We prove
+\[
+ \log K!\ \le\ \log a(n)\ \le\ \log K!+O\Bigl(\frac{\sqrt n}{\log n}\Bigr),
+\]
+where $K$ is the largest integer with $K(K+1)/2\le n$. Consequently
+\[
+ \log a(n)=\sqrt{n/2}\,\bigl(\log(2n)-2\bigr)+O\Bigl(\frac{\sqrt n}{\log n}\Bigr).
+\]
+We also prove the full asymptotic formula
+\[
+ a(n)=\frac{e^{\Phi_n(s_n)}}{\sqrt{2\pi V(s_n)}}\Bigl(1+O\bigl(n^{-1/4}\sqrt{\log n}\bigr)\Bigr),\qquad \Phi_n(s)=sn+\sum_{k\ge1}\log\bigl(1+ke^{-sk}\bigr),
+\]
+where $s_n$ minimises $\Phi_n$ and $V$ is an explicit variance. The proof is a local limit theorem for a sum of independent Bernoulli variables. Exact values up to $n=10^4$ agree with the formula, with relative error $6\cdot10^{-4}$ at $n=10^4$.
+\end{abstract}
+
+\noindent\textbf{MSC 2020:} 05A16, 11P82, 60F05.\\
+\textbf{Keywords:} partitions into distinct parts, saddle-point method, local limit theorem, OEIS A022629.
+
+\section{Introduction and results}
+
+Write
+\[
+ \sum_{n\ge0}a(n)x^n=\prod_{k\ge1}(1+kx^k),\qquad a(n)=\sum_{\substack{\lambda\vdash n\\ \text{distinct parts}}}\ \prod_{k\in\lambda}k .
+\]
+The sequence begins $1,1,2,5,7,15,25,43,64,\ldots$ For $K\ge0$ put $T_K=K(K+1)/2$, and for $n\ge1$ let $K=K(n)$ be the largest integer with $T_K\le n$. Since $K+\frac12\le\sqrt{2n+\frac14}<K+\frac32$, we have $K=\sqrt{2n}+O(1)$.
+
+\begin{theorem}\label{thm:main}
+As $n\to\infty$,
+\[
+ \log K!\ \le\ \log a(n)\ \le\ \log K!+O\Bigl(\frac{\sqrt n}{\log n}\Bigr).
+\]
+Consequently
+\[
+ \log a(n)=\sqrt{\frac n2}\,\bigl(\log(2n)-2\bigr)+O\Bigl(\frac{\sqrt n}{\log n}\Bigr).
+\]
+\end{theorem}
+
+The second statement follows from the first. By Stirling's formula $\log K!=f(K)+O(\log K)$ with $f(x)=x\log x-x$; since $f'(x)=\log x$ and $K=\sqrt{2n}+O(1)$, $f(K)=f(\sqrt{2n})+O(\log n)$, and $f(\sqrt{2n})=\sqrt{2n}\,(\frac12\log(2n)-1)=\sqrt{n/2}\,(\log(2n)-2)$. This proves Kotesovec's conjecture, with relative error $O(1/\log^2n)$.
+
+For $s>0$ let
+\[
+ Z(s)=\prod_{k\ge1}(1+ke^{-sk}),\qquad p_k(s)=\frac{ke^{-sk}}{1+ke^{-sk}},\qquad \Phi_n(s)=sn+\log Z(s),
+\]
+\[
+ m(s)=\sum_{k\ge1}kp_k(s),\qquad V(s)=\sum_{k\ge1}k^2p_k(s)\bigl(1-p_k(s)\bigr).
+\]
+Each $p_k$ is continuous and strictly decreasing in $s$, and the series converge uniformly on $[s_0,\infty)$ for every $s_0>0$. Hence $m$ is continuous and strictly decreasing, with $m(s)\to0$ as $s\to\infty$ and $m(s)\to\infty$ as $s\to0$ (Lemma~\ref{lem:scales}). So for every $n\ge1$ there is a unique $s_n>0$ with $m(s_n)=n$. Since $\Phi_n'(s)=n-m(s)$, $s_n$ is the unique minimiser of $\Phi_n$.
+
+\begin{theorem}\label{thm:saddle}
+As $n\to\infty$,
+\[
+ a(n)=\frac{e^{\Phi_n(s_n)}}{\sqrt{2\pi V(s_n)}}\Bigl(1+O\bigl(n^{-1/4}\sqrt{\log n}\bigr)\Bigr).
+\]
+\end{theorem}
+
+\begin{remark}
+Theorem~\ref{thm:saddle} expresses $a(n)$ through the solution of one explicit equation,
+\[
+ \sum_{k\ge1}\frac{k^2e^{-sk}}{1+ke^{-sk}}=n,
+\]
+and it is immediate to evaluate numerically (Table~\ref{tab:num}). We do not obtain an expansion of $\Phi_n(s_n)$ in elementary functions of $n$. Heuristically such an expansion contains terms of order $\sqrt n/\log^jn$ for every $j\ge1$, all larger than the constant term, so a closed elementary formula for $a(n)$ itself should not be expected from this approach. The gap in Theorem~\ref{thm:main} appears to be of exact order $\sqrt n/\log n$: $(\log a(n)-\log K!)\log n/\sqrt n$ stays between $4.1$ and $5.4$ for $100\le n\le10^4$.
+\end{remark}
+
+\begin{remark}
+The companion sequence \oeis{A266891}, with product $\prod(1+kx^k)^k$, was treated in an earlier note, where the analogue of Theorem~\ref{thm:saddle} was only stated as a conjecture. The local limit argument of Section~\ref{sec:saddle} uses only independence, the scale estimates and the Fourier bound of Lemma~\ref{lem:fejer}, and appears to extend to that case with binomial instead of Bernoulli variables; we do not pursue this here.
+\end{remark}
+
+\section{Proof of Theorem~\ref{thm:main}}
+
+\emph{Lower bound.} From the factors with $k=1,\dots,K-1$ take the term $kx^k$; they contribute $(K-1)!\,x^{T_{K-1}}$. The remaining degree $R=n-T_{K-1}$ satisfies $R\ge K$, because $T_K\le n$. So $R$ is a part different from $1,\dots,K-1$, and from the factor $1+Rx^R$ we take $Rx^R$. All coefficients being nonnegative, $a(n)\ge(K-1)!\,R\ge K!$.
+
+\emph{Upper bound.} Nonnegativity gives $a(n)\le e^{tn}Z(t)$ for every $t>0$. Take $t=\log K/K$ and $u_k=\log k-tk$, so that $\log(1+ke^{-tk})=\max(u_k,0)+\log(1+e^{-|u_k|})$. As a function of real $x>0$, $u(x)=\log x-tx$ is concave, increases up to $x=1/t$, decreases afterwards, and $u(K)=0$. For large $K$ this gives $u_1=-t<0$, $u_k\ge0$ for $2\le k\le K$, and $u_k<0$ for $k>K$. Hence
+\[
+ \log a(n)\le tn+\sum_{k=2}^K(\log k-tk)+E=\log K!+t(n-T_K)+t+E,\qquad E=\sum_{k\ge1}\log\bigl(1+e^{-|u_k|}\bigr).
+\]
+Here $0\le n-T_K\le K$, so $t(n-T_K)\le\log K$. We bound $E$ using $\log(1+e^{-|u|})\le e^{-|u|}$.
+\begin{itemize}
+\item $k\le2$: at most $2\log2$.
+\item $3\le k\le1/t$: here $e^{-u_k}=e^{tk}/k\le e/k$, so the total is $O(\log(1/t))=O(\log K)$.
+\item $1/t\le k\le K$: by concavity $u$ lies above its chord from $(1/t,u(1/t))$ to $(K,0)$, so $u_k\ge\lambda(K-k)$ with $\lambda=u(1/t)/(K-1/t)\ge(\log K-\log\log K-1)/K$. The total is at most $\sum_{m\ge0}e^{-\lambda m}\le1+1/\lambda=O(K/\log K)$.
+\item $k>K$: by concavity $u_k\le u'(K)(k-K)=-\lambda'(k-K)$ with $\lambda'=t-1/K=(\log K-1)/K$, so the total is at most $\sum_{m\ge1}e^{-\lambda'm}\le1/\lambda'=O(K/\log K)$.
+\end{itemize}
+Thus $E=O(K/\log K)=O(\sqrt n/\log n)$, which proves Theorem~\ref{thm:main}. \qed
+
+\section{Scales}
+
+For $0<s<1/e$ let $\kappa=\kappa(s)$ be the unique solution of $\log\kappa=s\kappa$ in $(1/s,\infty)$; then $\kappa\to\infty$ and $1/s=\kappa/\log\kappa$ as $s\to0$. Write $u_k=\log k-sk$, so that $p_k=e^{u_k}/(1+e^{u_k})$ and $p_k(1-p_k)\le e^{-|u_k|}$. In this section and the next, constants are absolute and $s$ is sufficiently small.
+
+\begin{lemma}\label{lem:scales}
+\begin{enumerate}
+\item[(i)] $\kappa^2/5\le m(s)\le\kappa^2$.
+\item[(ii)] The set $I=\{k>1/s:\ |u_k|\le1\}$ consists of $L$ consecutive integers with $1/s\le L\le4/s+1$, it is contained in $[\kappa/2,2\kappa]$, and $p_k(1-p_k)\ge1/6$ for $k\in I$.
+\item[(iii)] $c\,\kappa^2/s\le V(s)\le C\,\kappa^2/s$; in particular $V(s)\asymp\kappa^3/\log\kappa$.
+\item[(iv)] $\sum_{k>3\kappa}k^jp_k=O\bigl(\kappa^{j-1}/\log\kappa\bigr)$ for $j=0,1,2$; in particular $\sum_{k>3\kappa}p_k=O(1/(\kappa\log\kappa))$.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+As in Section 2, $u$ is concave with maximum at $1/s$, $u_k\ge0$ for $3\le k\le\kappa$, and for $k>\kappa$ we have $u_k\le-\lambda'(k-\kappa)$ with $\lambda'=s-1/\kappa=(\log\kappa-1)/\kappa\ge s/2$. For $1/s\le k\le\kappa$ the chord bound gives $u_k\ge\lambda(\kappa-k)$ with $\lambda\ge(\log\kappa-\log\log\kappa-1)/\kappa\ge s/2$.
+
+(i) Since $p_k\ge\frac12$ for $3\le k\le\kappa$, $m\ge\frac12\sum_{3\le k\le\kappa}k\ge\kappa^2/5$. Also $m\le\sum_{k\le\kappa}k+\sum_{m'\ge1}(\kappa+m')e^{-\lambda'm'}\le\frac{\kappa^2}2+O(\kappa+\kappa/\lambda'+1/\lambda'^2)\le\kappa^2$, since $1/\lambda'\le2\kappa/\log\kappa$.
+
+(ii) On $(1/s,\infty)$, $u'(x)=1/x-s\in(-s,0)$, so $u$ decreases strictly from $u(1/s)=\log(1/s)-1>1$ to $-\infty$, and $\{x>1/s:|u(x)|\le1\}=[x_1,x_2]$ with $u(x_1)=1$, $u(x_2)=-1$ and $x_1<\kappa<x_2$. Because $|u'|<s$, $x_2-x_1\ge2/s$. Because $u(2/s)=\log(2/s)-2>1$, we have $x_1>2/s$, and on $[2/s,\infty)$ we have $|u'|\ge s/2$; hence $x_2-x_1\le4/s$ and $|x-\kappa|\le2/s$ on $[x_1,x_2]$. So $I$ consists of the integers in $[x_1,x_2]$, $2/s-1\le L\le4/s+1$, and $I\subset[\kappa-2/s,\kappa+2/s]\subset[\kappa/2,2\kappa]$ since $2/s=2\kappa/\log\kappa$. Finally $p(1-p)\ge e/(1+e)^2>1/6$ when $|u|\le1$.
+
+(iii) By (ii), $V\ge\frac16\sum_{k\in I}k^2\ge\frac16(\kappa/2)^2(1/s)$. For the upper bound: $k\le2$ contributes $O(1)$; $3\le k\le1/s$ contributes $\sum k^2\cdot e/k=O(s^{-2})=O(\kappa^2/s)$; $1/s\le k\le\kappa$ contributes at most $\kappa^2\sum_{m'\ge0}e^{-\lambda m'}=O(\kappa^2/s)$; and $k>\kappa$ contributes $\sum_{m'\ge1}(\kappa+m')^2e^{-\lambda'm'}=O(\kappa^2/\lambda'+1/\lambda'^3)=O(\kappa^2/s)$.
+
+(iv) For $k=\kappa+m'$ with $m'>2\kappa$, $p_k\le e^{u_k}\le e^{-\lambda'm'}$ and $e^{-2\lambda'\kappa}=e^2/\kappa^2$. Hence
+\[
+ \sum_{k>3\kappa}k^jp_k\le\frac{e^2}{\kappa^2}\sum_{r\ge0}(3\kappa+r)^je^{-\lambda'r}=\frac{e^2}{\kappa^2}\,O\Bigl(\frac{\kappa^j}{\lambda'}+\frac{1}{\lambda'^{j+1}}\Bigr)=O\Bigl(\frac{\kappa^{j-1}}{\log\kappa}\Bigr),
+\]
+using $1/\lambda'\le2\kappa/\log\kappa$.
+\end{proof}
+
+\begin{lemma}\label{lem:fejer}
+Let $I$ be a set of $L\ge1$ consecutive integers and $0<|\theta|\le\pi$. Then
+\[
+ \sum_{k\in I}(1-\cos k\theta)\ \ge\ \min\Bigl(\frac L2,\ \frac{L(L^2-1)\theta^2}{6\pi^2}\Bigr).
+\]
+\end{lemma}
+
+\begin{proof}
+Let $x=|\theta|/2\in(0,\pi/2]$ and let $c$ be the midpoint of $I$. Then
+\[
+ \sum_{k\in I}\cos k\theta=\cos(c\theta)\,\frac{\sin(Lx)}{\sin x},
+\]
+so the sum in question is at least
+\[
+ L-\frac{|\sin(Lx)|}{\sin x}.
+\]
+ If $Lx\ge\pi$, then $|\sin(Lx)|/\sin x\le\pi/(2x)\le L/2$, using $\sin x\ge2x/\pi$. If $Lx<\pi$, then $\sin(Lx)>0$ and
+\[
+ L-\frac{\sin(Lx)}{\sin x}=\sum_j\bigl(1-\cos(2xj)\bigr),\qquad j\in\Bigl\{-\tfrac{L-1}2,-\tfrac{L-1}2+1,\dots,\tfrac{L-1}2\Bigr\},
+\]
+because $\sum_j\cos(2xj)=\sin(Lx)/\sin x$. Here $|2xj|\le(L-1)x<\pi$, so $1-\cos(2xj)\ge8x^2j^2/\pi^2$, and $\sum_jj^2=L(L^2-1)/12$. This gives $2x^2L(L^2-1)/(3\pi^2)=\theta^2L(L^2-1)/(6\pi^2)$.
+\end{proof}
+
+\section{Proof of Theorem~\ref{thm:saddle}}\label{sec:saddle}
+
+Fix $s>0$ and let $j_k$, $k\ge1$, be independent with $\mathbb P(j_k=1)=p_k=p_k(s)$ and $\mathbb P(j_k=0)=1-p_k$. A finite set $\lambda$ of distinct parts (that is, $j_k=1$ exactly for $k\in\lambda$) has probability $e^{-s|\lambda|}\prod_{k\in\lambda}k/Z(s)$, where $|\lambda|$ is the sum of its parts. Summing over $|\lambda|=n$, with $N=\sum_kkj_k$,
+\[
+ a(n)=e^{sn}Z(s)\,\mathbb P_s(N=n)\qquad(s>0).
+\]
+We take $s=s_n$, so that $\mathbb E N=m(s_n)=n$, and write $\kappa=\kappa(s_n)$, $V=V(s_n)$. By Lemma~\ref{lem:scales}(i), $\sqrt n\le\kappa\le\sqrt{5n}$, so $s_n\to0$ and the lemma applies; by (iii), $V\asymp\kappa^3/\log\kappa$. It suffices to prove
+\[
+ \mathbb P(N=n)=\frac{1}{\sqrt{2\pi V}}\Bigl(1+O\Bigl(\sqrt{\tfrac{\log\kappa}{\kappa}}\Bigr)\Bigr).
+\]
+By Fourier inversion, $\mathbb P(N=n)=\frac1{2\pi}\int_{-\pi}^{\pi}\psi(\theta)\,d\theta$ with
+\[
+ \psi(\theta)=e^{-in\theta}\prod_{k\ge1}f_k(k\theta),\qquad f_k(y)=1-p_k+p_ke^{iy},\qquad |f_k(y)|^2=1-2p_k(1-p_k)(1-\cos y).
+\]
+In particular $|\psi(\theta)|\le\exp\bigl(-\sum_kp_k(1-p_k)(1-\cos k\theta)\bigr)$. Put $\theta_0=\log\kappa/\sqrt V$.
+
+\emph{Range $\theta_0\le|\theta|\le\pi/(4\kappa)$.} For $k\in I$ we have $k\le2\kappa$, so $|k\theta|\le\pi/2$ and $1-\cos k\theta\ge2k^2\theta^2/\pi^2$. By Lemma~\ref{lem:scales}(ii),(iii), $\sum_{k\in I}p_k(1-p_k)(1-\cos k\theta)\ge\frac{1}{3\pi^2}\theta^2\sum_{k\in I}k^2\ge c'V\theta^2$. Hence this range contributes at most $2\int_{\theta_0}^\infty e^{-c'V\theta^2}d\theta=O(V^{-1/2}e^{-c'\log^2\kappa})$.
+
+\emph{Range $\pi/(4\kappa)\le|\theta|\le\pi$.} By Lemma~\ref{lem:fejer} applied to $I$, with $1/s\le L\le4/s+1$ and $p_k(1-p_k)\ge1/6$ on $I$,
+\[
+ \sum_kp_k(1-p_k)(1-\cos k\theta)\ge\frac16\min\Bigl(\frac L2,\frac{L(L^2-1)\theta^2}{6\pi^2}\Bigr)\ge c''\min\Bigl(\frac1s,\frac{1}{s^3\kappa^2}\Bigr)=c''\frac{\kappa}{\log^3\kappa}.
+\]
+So this range contributes $O(e^{-c''\kappa/\log^3\kappa})$, which is $O(V^{-1/2}\kappa^{-1})$.
+
+\emph{Range $|\theta|\le\theta_0$.} Split $\psi=\psi_1\psi_2$ with $\psi_2(\theta)=\prod_{k>3\kappa}f_k(k\theta)$. Since $|f_k|\le1$ and $|f_k(y)-1|\le2p_k$, Lemma~\ref{lem:scales}(iv) gives $|\psi_2-1|\le2\sum_{k>3\kappa}p_k=O(1/(\kappa\log\kappa))$. For $k\le3\kappa$ we have $|k\theta|\le3\kappa\theta_0=O(\log^{3/2}\kappa/\sqrt\kappa)\le1$. For $|y|\le\pi/2$ we have $|f_k(y)|^2\ge\frac12$, so $g_k=\log f_k$ (with $g_k(0)=0$) is smooth there, with $g_k'(0)=ip_k$, $g_k''(y)=-p_k(1-p_k)e^{iy}/f_k(y)^2$, and
+\[
+ |g_k'''(y)|=p_k(1-p_k)\Bigl|\frac{ie^{iy}}{f_k^2}-\frac{2ip_ke^{2iy}}{f_k^3}\Bigr|\le p_k(1-p_k)(2+2\cdot2^{3/2})\le8p_k(1-p_k).
+\]
+By Taylor's theorem, $g_k(y)=ip_ky-\frac12p_k(1-p_k)y^2+r_k$ with $|r_k|\le\frac43p_k(1-p_k)|y|^3$. Summing over $k\le3\kappa$ and writing $m_>=\sum_{k>3\kappa}kp_k$ and $V_>=\sum_{k>3\kappa}k^2p_k(1-p_k)$, we get
+\[
+ \psi_1(\theta)=\exp\Bigl(-\frac{V\theta^2}2+\Delta(\theta)\Bigr),\qquad |\Delta(\theta)|\le m_>|\theta|+\frac{V_>\theta^2}2+4\kappa V|\theta|^3,
+\]
+because $\sum_{k\le3\kappa}k^3p_k(1-p_k)\le3\kappa V$. By Lemma~\ref{lem:scales}(iv), $m_>=O(1/\log\kappa)$ and $V_>=O(\kappa/\log\kappa)$, so $\sup_{|\theta|\le\theta_0}|\Delta|=O(\log^{7/2}\kappa/\sqrt\kappa)=o(1)$. Using $|e^{\Delta}\psi_2-1|\le e^{|\Delta|}(|\Delta|+|\psi_2-1|)$,
+\begin{align*}
+ \Bigl|\int_{|\theta|\le\theta_0}\bigl(\psi(\theta)-e^{-V\theta^2/2}\bigr)d\theta\Bigr|
+ &\le3\int_{\mathbb R}e^{-V\theta^2/2}\Bigl(m_>|\theta|+\frac{V_>\theta^2}{2}+4\kappa V|\theta|^3+\frac{C}{\kappa\log\kappa}\Bigr)d\theta\\
+ &=O\Bigl(\frac{m_>}{V}+\frac{V_>}{V^{3/2}}+\frac{\kappa}{V}+\frac{1}{\kappa\sqrt V}\Bigr).
+\end{align*}
+Relative to $\sqrt{2\pi/V}$ this is $O(\kappa/\sqrt V)=O(\sqrt{\log\kappa/\kappa})$. Finally,
+\[
+ \int_{|\theta|>\theta_0}e^{-V\theta^2/2}\,d\theta=O\bigl(V^{-1/2}e^{-\log^2\kappa/2}\bigr).
+\]
+
+Collecting the three ranges, $\mathbb P(N=n)=\frac1{2\pi}\sqrt{2\pi/V}\,(1+O(\sqrt{\log\kappa/\kappa}))$. Since $\kappa\asymp\sqrt n$, this is the claim, and Theorem~\ref{thm:saddle} follows from $a(n)=e^{\Phi_n(s_n)}\mathbb P(N=n)$. \qed
+
+\section{Numerical evidence}\label{sec:num}
+
+The script \texttt{verify\_a022629.py} computes $a(n)$ exactly for $n\le3000$, checks it against the OEIS data and the b-file of Alois P.~Heinz, and evaluates both theorems up to $n=10^4$ (Table~\ref{tab:num}). The last column is the logarithm of the ratio of $a(n)$ to the formula of Theorem~\ref{thm:saddle}; it decreases steadily in absolute value. The main term of Theorem~\ref{thm:main} converges much more slowly, as expected from an error of relative order $1/\log^2n$.
+
+\begin{table}[h]
+\centering
+\begin{tabular}{rrrrrr}
+\toprule
+$n$ & $K$ & $\log a(n)$ & $\log K!$ & $\sqrt{n/2}\,(\log 2n-2)$ & $\log a(n)-\log\frac{e^{\Phi_n(s_n)}}{\sqrt{2\pi V(s_n)}}$\\
+\midrule
+100 & 13 & 31.570 & 22.552 & 23.323 & $-0.01090$\\
+200 & 19 & 50.962 & 39.340 & 39.915 & $-0.00688$\\
+500 & 31 & 93.733 & 78.092 & 77.598 & $-0.00383$\\
+1000 & 44 & 146.645 & 125.317 & 125.240 & $-0.00248$\\
+2000 & 62 & 227.380 & 196.866 & 199.035 & $-0.00161$\\
+3000 & 76 & 292.864 & 256.221 & 259.471 & $-0.00125$\\
+5000 & 99 & 401.567 & 359.134 & 360.517 & $-0.00092$\\
+7000 & 117 & 493.512 & 443.475 & 446.476 & $-0.00075$\\
+10000 & 140 & 613.211 & 555.220 & 558.861 & $-0.00060$\\
+\bottomrule
+\end{tabular}
+\caption{Exact values against Theorems~\ref{thm:main} and~\ref{thm:saddle}.}\label{tab:num}
+\end{table}
+
+\section*{Acknowledgements}
+The conjecture and the question of the asymptotic of $a(n)$ are due to Vaclav Kotesovec; the b-file is by Alois P.~Heinz. Parts of the derivation and code were developed with AI assistance; all statements were checked by the author and all computations are reproducible with the accompanying script.
+
+\begin{thebibliography}{9}
+\bibitem{OEIS} OEIS Foundation Inc., \emph{The On-Line Encyclopedia of Integer Sequences}, \url{https://oeis.org}; entries A022629, A266891.
+\bibitem{A266891} Le Duy Phuc, Asymptotics of the coefficients of $\prod_{k\ge1}(1+kx^k)^k$: proof of Kotesovec's conjecture for OEIS A266891, preprint, Zenodo, 2026, \href{https://doi.org/10.5281/zenodo.24521853}{doi:10.5281/zenodo.24521853}.
+\bibitem{FS} P. Flajolet and R. Sedgewick, \emph{Analytic Combinatorics}, Cambridge University Press, 2009, Chapter VIII.
+\end{thebibliography}
+
+\end{document}
